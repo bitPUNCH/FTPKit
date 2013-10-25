@@ -15,3 +15,6 @@ This software is provided by bitPUNCH e.K. "as is" and any express or implied wa
 
 
 #Get the full version
+
+You can purchase the full version of FTPKit at Binpress:  
+[http://www.binpress.com/app/ftp-kit-for-ios-and-os-x/1669](http://www.binpress.com/app/ftp-kit-for-ios-and-os-x/1669)

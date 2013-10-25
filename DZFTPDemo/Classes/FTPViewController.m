@@ -188,7 +188,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"Download File", @""), NSLocalizedString(@"Delete File", @""), nil];
+                                                        otherButtonTitles:NSLocalizedString(@"Download File", @""), NSLocalizedString(@"Delete File", @""), NSLocalizedString(@"Change Permissions", @""), nil];
         actionSheet.tag = FILE_ACTIONSHEET_TAG;
         [actionSheet showInView:self.navigationController.view];
         [actionSheet release];
@@ -252,6 +252,21 @@
     //File deleted. Refresh content.
     [activityIndicator startAnimating];
     [ftpClient listDirectoryInCurrentLocationShowHiddenItems:YES];
+}
+
+- (void)client:(DZFTPClient *)client request:(DZFTPRequest *)request didChmodFile:(NSURL *)fileURL toMode:(int)mode
+{
+    //Permission changed. Refresh content.
+    [activityIndicator startAnimating];
+    [ftpClient listDirectoryInCurrentLocationShowHiddenItems:YES];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Permission changed to %d", @""), mode]
+                                                    message:nil
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
 }
 
 - (void)client:(DZFTPClient *)client request:(DZFTPRequest *)request didUpdateProgress:(float)progress
@@ -328,6 +343,11 @@
         {
             [activityIndicator startAnimating];
             [ftpClient deleteFileInCurrentLocation:item.name];
+        }
+        else if (buttonIndex == 2) //Change Permissions
+        {
+            [activityIndicator startAnimating];
+            [ftpClient chmodItem:item toMode:755];
         }
     }
 }
